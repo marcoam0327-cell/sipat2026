@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,7 +10,7 @@
 
 body{
 margin:0;
-font-family:Segoe UI,sans-serif;
+font-family:Arial, sans-serif;
 background:#46178f;
 color:white;
 display:flex;
@@ -21,42 +19,73 @@ align-items:center;
 height:100vh;
 }
 
-.card{
+.container{
 width:90%;
-max-width:900px;
+max-width:1000px;
+text-align:center;
+}
+
+.card{
 background:white;
 color:black;
-padding:40px;
+padding:30px;
 border-radius:20px;
-text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 
-h1{
-color:#46178f;
+.answers{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:20px;
 }
 
-button{
+.answer{
+border:none;
+padding:20px;
+font-size:18px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+border-radius:10px;
+}
+
+.red{background:#e21b3c;}
+.blue{background:#1368ce;}
+.yellow{background:#d89e00;}
+.green{background:#26890c;}
+
+button:hover{
+opacity:0.9;
+}
+
+.hidden{
+display:none;
+}
+
+#result{
+margin-top:20px;
+font-size:24px;
+font-weight:bold;
+}
+
+.start-btn{
 background:#1368ce;
 color:white;
-border:none;
 padding:15px 30px;
-font-size:20px;
+border:none;
 border-radius:10px;
+font-size:20px;
 cursor:pointer;
 }
 
-button:hover{
-background:#0d4ea0;
-}
-
 </style>
-
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
+
+<div id="home" class="card">
 
 <h1>SIPAT 2026</h1>
 
@@ -64,24 +93,80 @@ background:#0d4ea0;
 Primeiro a vida, conectados pela segurança e movidos pelo cuidado ativo
 </h2>
 
-<p>
-Teste seus conhecimentos e concorra ao topo do ranking!
-</p>
-
-<button onclick="iniciar()">
+<button class="start-btn" onclick="startQuiz()">
 INICIAR QUIZ
 </button>
 
 </div>
 
+<div id="quiz" class="card hidden">
+
+<h2>
+Qual é o lema principal da SIPAT 2026?
+</h2>
+
+<div class="answers">
+
+<button class="answer red"
+onclick="check(false)">
+A) A produtividade vem em primeiro lugar
+</button>
+
+<button class="answer blue"
+onclick="check(true)">
+B) Primeiro a vida, conectados pela segurança e movidos pelo cuidado ativo
+</button>
+
+<button class="answer yellow"
+onclick="check(false)">
+C) Segurança é responsabilidade apenas da CIPA
+</button>
+
+<button class="answer green"
+onclick="check(false)">
+D) Trabalhar rápido para evitar riscos
+</button>
+
+</div>
+
+<div id="result"></div>
+
+</div>
+
+</div>
+
 <script>
 
-function iniciar(){
-alert("Próxima etapa: carregar perguntas.");
+function startQuiz(){
+
+document.getElementById("home").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+
+}
+
+function check(correct){
+
+if(correct){
+
+document.getElementById("result").innerHTML =
+"✅ Resposta correta!";
+
+document.getElementById("result").style.color =
+"green";
+
+}else{
+
+document.getElementById("result").innerHTML =
+"❌ Resposta incorreta!";
+
+document.getElementById("result").style.color =
+"red";
+
+}
+
 }
 
 </script>
 
 </body>
-
 </html>
