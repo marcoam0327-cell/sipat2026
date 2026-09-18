@@ -8,15 +8,30 @@
 <style>
 
 body{
-margin:0;
-font-family:Segoe UI,sans-serif;
-background:#46178f;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    min-height:100vh;
+
+    background-image:url("imagens/fundo-inicial.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+    
+.tela-inicial{
+    background-image:url("imagens/fundo-inicial.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
 }
 
+.tela-quiz{
+    background-image:url("imagens/fundo-perguntas.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+    
 .container{
 width:90%;
 max-width:1100px;
@@ -322,6 +337,8 @@ return;
 
 document.getElementById("startScreen").classList.add("hidden");
 document.getElementById("quizScreen").classList.remove("hidden");
+document.body.classList.remove("tela-inicial");
+document.body.classList.add("tela-quiz");    
 
 mostrarPergunta();
 }
@@ -433,6 +450,7 @@ async function finalizar(){
 
 document.getElementById("quizScreen").classList.add("hidden");
 document.getElementById("resultScreen").classList.remove("hidden");
+document.body.classList.remove("tela-quiz");
 
 let medalha="🏅";
 
