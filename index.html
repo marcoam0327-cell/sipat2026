@@ -413,11 +413,23 @@ btn.style.borderColor = "#333";
 
 });
 
-proximaPergunta();
+function proximaPergunta(){
 
-},1500);
+perguntaAtual++;
+
+if(perguntaAtual<perguntas.length){
+
+mostrarPergunta();
+
+}else{
+
+finalizar();
 
 }
+
+}
+
+async function finalizar(){
 
 document.getElementById("quizScreen").classList.add("hidden");
 document.getElementById("resultScreen").classList.remove("hidden");
