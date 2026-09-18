@@ -2,44 +2,435 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Teste SIPAT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIPAT 2026</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI,sans-serif;
+background:#46178f;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+.container{
+width:90%;
+max-width:1100px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+h1,h2{
+text-align:center;
+}
+
+input{
+width:100%;
+padding:15px;
+margin:10px 0;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:10px;
+box-sizing:border-box;
+}
+
+.btn{
+background:#1368CE;
+border:none;
+color:white;
+padding:15px;
+font-size:18px;
+border-radius:10px;
+cursor:pointer;
+width:100%;
+}
+
+.btn:hover{
+background:#0d52a5;
+}
+
+.hidden{
+display:none;
+}
+
+.answers{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:20px;
+}
+
+.answer{
+border:none;
+padding:20px;
+font-size:18px;
+font-weight:bold;
+color:white;
+border-radius:10px;
+cursor:pointer;
+}
+
+.red{
+background:#E21B3C;
+}
+
+.blue{
+background:#1368CE;
+}
+
+.yellow{
+background:#D89E00;
+}
+
+.green{
+background:#26890C;
+}
+
+.timer{
+text-align:center;
+font-size:32px;
+font-weight:bold;
+color:#46178f;
+margin-bottom:15px;
+}
+
+.progress{
+text-align:center;
+margin-bottom:10px;
+font-weight:bold;
+}
+
+.result{
+text-align:center;
+font-size:24px;
+font-weight:bold;
+margin-top:20px;
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>Teste de envio para a planilha</h1>
+<div class="container">
 
-<p>Nome:</p>
-<input id="nome">
+<div id="startScreen" class="card">
 
-<p>Matrícula:</p>
-<input id="matricula">
+<h1>SIPAT 2026</h1>
 
-<br><br>
+<h2>
+Primeiro a vida, conectados pela segurança e movidos pelo cuidado ativo
+</h2>
 
-<button onclick="enviar()">
-Enviar
+<input
+id="nome"
+placeholder="Digite seu nome">
+
+<input
+id="matricula"
+placeholder="Digite sua matrícula">
+
+<button class="btn" onclick="startQuiz()">
+INICIAR QUIZ
 </button>
+
+</div>
+
+<div id="quizScreen" class="card hidden">
+
+<div class="progress" id="progress"></div>
+
+<div class="timer" id="timer">
+20
+</div>
+
+<h2 id="question"></h2>
+
+<div class="answers">
+
+<button class="answer red" onclick="answer(0)" id="a0"></button>
+
+<button class="answer blue" onclick="answer(1)" id="a1"></button>
+
+<button class="answer yellow" onclick="answer(2)" id="a2"></button>
+
+<button class="answer green" onclick="answer(3)" id="a3"></button>
+
+</div>
+
+</div>
+
+<div id="resultScreen" class="card hidden">
+
+<h1>Quiz Finalizado</h1>
+
+<div id="finalResult" class="result"></div>
+
+</div>
+
+</div>
 
 <script>
 
-async function enviar(){
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbxDHxPdGd9iD95dHFr449Nhcwt70WLk4Obue2jtPCFOVr4BqYIfxGUoXpewqZ2MnhTmhw/exec";
 
-const dados = {
-    nome: document.getElementById("nome").value,
-    matricula: document.getElementById("matricula").value,
-    pontuacao: 100,
-    acertos: 1
-};
+let nome="";
+let matricula="";
+let pontos=0;
+let acertos=0;
+let perguntaAtual=0;
+let tempo=20;
+let cronometro;
 
-await fetch(
-"https://script.google.com/macros/s/AKfycbxDHxPdGd9iD95dHFr449Nhcwt70WLk4Obue2jtPCFOVr4BqYIfxGUoXpewqZ2MnhTmhw/exec",
+const perguntas=[
+
 {
+q:"Qual é o lema principal da SIPAT 2026?",
+a:[
+"A produtividade vem em primeiro lugar",
+"Primeiro a vida, conectados pela segurança e movidos pelo cuidado ativo",
+"Segurança é responsabilidade apenas da CIPA",
+"Trabalhar rápido para evitar riscos"
+],
+c:1
+},
+
+{
+q:"O que significa o conceito de Cuidado Ativo na segurança do trabalho?",
+a:[
+"Cuidar apenas da sua própria segurança",
+"Cuidar de si mesmo, cuidar dos colegas e deixar que os outros cuidem de você",
+"Usar EPI apenas quando o supervisor estiver olhando",
+"Esperar o acidente acontecer para tomar atitudes"
+],
+c:1
+},
+
+{
+q:"Qual deve ser a primeira prioridade em qualquer atividade na empresa?",
+a:[
+"O cumprimento dos prazos",
+"A redução de custos operacionais",
+"A preservação da vida e a segurança",
+"A velocidade da entrega"
+],
+c:2
+},
+
+{
+q:"O que você deve fazer ao identificar uma condição ou comportamento inseguro?",
+a:[
+"Ignorar",
+"Alertar o colega/equipe e comunicar a área de segurança imediatamente",
+"Esperar a reunião semanal",
+"Apenas tirar foto"
+],
+c:1
+},
+
+{
+q:"Qual é o papel do uso correto dos EPIs?",
+a:[
+"Servir apenas para fiscalização",
+"Reduzir ou eliminar riscos de lesões",
+"Padronizar visual",
+"Substituir atenção"
+],
+c:1
+},
+
+{
+q:"O que significa estar conectado pela segurança?",
+a:[
+"Usar celular",
+"Enviar emails",
+"Trabalhar em equipe e cuidar uns dos outros",
+"Ter WiFi"
+],
+c:2
+},
+
+{
+q:"O que é o Direito de Recusa?",
+a:[
+"Não trabalhar sexta-feira",
+"Interromper atividade diante de risco grave e iminente",
+"Recusar capacete",
+"Não participar de treinamentos"
+],
+c:1
+},
+
+{
+q:"As atitudes que protegem hoje e sempre dependem de:",
+a:[
+"Diretoria",
+"Hábitos diários e conscientização",
+"Sorte",
+"Auditorias"
+],
+c:1
+},
+
+{
+q:"Qual alternativa representa Cuidado Ativo?",
+a:[
+"Avisar colega sobre capacete sem jugular ajustada",
+"Guardar ferramentas inadequadamente",
+"Passar correndo em piso molhado",
+"Deixar extensões expostas"
+],
+c:0
+},
+
+{
+q:"Por que a prevenção deve ser praticada todos os dias?",
+a:[
+"Porque a segurança é uma cultura contínua",
+"Porque SIPAT é evento festivo",
+"Para ganhar pontos",
+"Porque os dias mudam"
+],
+c:0
+}
+
+];
+
+function startQuiz(){
+
+nome=document.getElementById("nome").value.trim();
+matricula=document.getElementById("matricula").value.trim();
+
+if(nome==="" || matricula===""){
+alert("Preencha Nome e Matrícula");
+return;
+}
+
+document.getElementById("startScreen").classList.add("hidden");
+document.getElementById("quizScreen").classList.remove("hidden");
+
+mostrarPergunta();
+}
+
+function mostrarPergunta(){
+
+tempo=20;
+
+document.getElementById("progress").innerHTML=
+"Pergunta "+(perguntaAtual+1)+" de "+perguntas.length;
+
+document.getElementById("question").innerHTML=
+perguntas[perguntaAtual].q;
+
+for(let i=0;i<4;i++){
+document.getElementById("a"+i).innerHTML=
+perguntas[perguntaAtual].a[i];
+}
+
+clearInterval(cronometro);
+
+document.getElementById("timer").innerHTML=tempo;
+
+cronometro=setInterval(()=>{
+
+tempo--;
+
+document.getElementById("timer").innerHTML=tempo;
+
+if(tempo<=0){
+
+clearInterval(cronometro);
+
+proximaPergunta();
+
+}
+
+},1000);
+
+}
+
+function answer(opcao){
+
+clearInterval(cronometro);
+
+if(opcao===perguntas[perguntaAtual].c){
+
+acertos++;
+pontos+=100+(tempo*5);
+
+}
+
+proximaPergunta();
+
+}
+
+function proximaPergunta(){
+
+perguntaAtual++;
+
+if(perguntaAtual<perguntas.length){
+
+mostrarPergunta();
+
+}else{
+
+finalizar();
+
+}
+
+}
+
+async function finalizar(){
+
+document.getElementById("quizScreen").classList.add("hidden");
+document.getElementById("resultScreen").classList.remove("hidden");
+
+document.getElementById("finalResult").innerHTML=
+
+`
+<b>${nome}</b><br><br>
+
+Matrícula: ${matricula}<br><br>
+
+Acertos: ${acertos}/10<br><br>
+
+Pontuação: ${pontos}<br><br>
+
+Enviando resultado...
+`;
+
+try{
+
+await fetch(SCRIPT_URL,{
 method:"POST",
-body: JSON.stringify(dados)
+body:JSON.stringify({
+nome:nome,
+matricula:matricula,
+pontuacao:pontos,
+acertos:acertos
+})
 });
 
-alert("Enviado com sucesso!");
+document.getElementById("finalResult").innerHTML+=
+"<br><br>✅ Resultado enviado com sucesso!";
+
+}
+catch(e){
+
+document.getElementById("finalResult").innerHTML+=
+"<br><br>❌ Erro ao enviar resultado.";
+
+}
 
 }
 
