@@ -210,6 +210,7 @@ let acertos=0;
 let perguntaAtual=0;
 let tempo=20;
 let cronometro;
+document.body.classList.add("tela-inicial");
 
 const perguntas=[
 
@@ -429,6 +430,12 @@ btn.style.color = "#222";
 btn.style.borderColor = "#333";
 
 });
+
+proximaPergunta();
+
+},1500);
+
+}
 
 function proximaPergunta(){
 
