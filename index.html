@@ -1,168 +1,45 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>SIPAT 2026</title>
-
-<style>
-
-body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#46178f;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.container{
-width:90%;
-max-width:1000px;
-text-align:center;
-}
-
-.card{
-background:white;
-color:black;
-padding:30px;
-border-radius:20px;
-}
-
-.answers{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-margin-top:20px;
-}
-
-.answer{
-border:none;
-padding:20px;
-font-size:18px;
-color:white;
-font-weight:bold;
-cursor:pointer;
-border-radius:10px;
-}
-
-.red{background:#e21b3c;}
-.blue{background:#1368ce;}
-.yellow{background:#d89e00;}
-.green{background:#26890c;}
-
-button:hover{
-opacity:0.9;
-}
-
-.hidden{
-display:none;
-}
-
-#result{
-margin-top:20px;
-font-size:24px;
-font-weight:bold;
-}
-
-.start-btn{
-background:#1368ce;
-color:white;
-padding:15px 30px;
-border:none;
-border-radius:10px;
-font-size:20px;
-cursor:pointer;
-}
-
-</style>
+<title>Teste SIPAT</title>
 </head>
 
 <body>
 
-<div class="container">
+<h1>Teste de envio para a planilha</h1>
 
-<div id="home" class="card">
+<p>Nome:</p>
+<input id="nome">
 
-<h1>SIPAT 2026</h1>
+<p>Matrícula:</p>
+<input id="matricula">
 
-<h2>
-Primeiro a vida, conectados pela segurança e movidos pelo cuidado ativo
-</h2>
+<br><br>
 
-<button class="start-btn" onclick="startQuiz()">
-INICIAR QUIZ
+<button onclick="enviar()">
+Enviar
 </button>
-
-</div>
-
-<div id="quiz" class="card hidden">
-
-<h2>
-Qual é o lema principal da SIPAT 2026?
-</h2>
-
-<div class="answers">
-
-<button class="answer red"
-onclick="check(false)">
-A) A produtividade vem em primeiro lugar
-</button>
-
-<button class="answer blue"
-onclick="check(true)">
-B) Primeiro a vida, conectados pela segurança e movidos pelo cuidado ativo
-</button>
-
-<button class="answer yellow"
-onclick="check(false)">
-C) Segurança é responsabilidade apenas da CIPA
-</button>
-
-<button class="answer green"
-onclick="check(false)">
-D) Trabalhar rápido para evitar riscos
-</button>
-
-</div>
-
-<div id="result"></div>
-
-</div>
-
-</div>
 
 <script>
 
-function startQuiz(){
+async function enviar(){
 
-document.getElementById("home").classList.add("hidden");
-document.getElementById("quiz").classList.remove("hidden");
+const dados = {
+    nome: document.getElementById("nome").value,
+    matricula: document.getElementById("matricula").value,
+    pontuacao: 100,
+    acertos: 1
+};
 
-}
+await fetch(
+"https://script.google.com/macros/s/AKfycbxDHxPdGd9iD95dHFr449Nhcwt70WLk4Obue2jtPCFOVr4BqYIfxGUoXpewqZ2MnhTmhw/exec",
+{
+    method:"POST",
+    body: JSON.stringify(dados)
+});
 
-function check(correct){
-
-if(correct){
-
-document.getElementById("result").innerHTML =
-"✅ Resposta correta!";
-
-document.getElementById("result").style.color =
-"green";
-
-}else{
-
-document.getElementById("result").innerHTML =
-"❌ Resposta incorreta!";
-
-document.getElementById("result").style.color =
-"red";
-
-}
+alert("Enviado com sucesso!");
 
 }
 
