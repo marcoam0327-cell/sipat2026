@@ -1,17 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-    <title>SIPAT 2026</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>SIPAT 2026</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI,sans-serif;
+background:#46178f;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.card{
+width:90%;
+max-width:900px;
+background:white;
+color:black;
+padding:40px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+h1{
+color:#46178f;
+}
+
+button{
+background:#1368ce;
+color:white;
+border:none;
+padding:15px 30px;
+font-size:20px;
+border-radius:10px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0d4ea0;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h1>Quiz SIPAT 2026</h1>
+<div class="card">
 
-<p>Primeiro a vida, conectados pela segurança e movidos pelo cuidado ativo.</p>
+<h1>SIPAT 2026</h1>
 
-<button onclick="alert('Funcionando!')">
-    Iniciar Quiz
+<h2>
+Primeiro a vida, conectados pela segurança e movidos pelo cuidado ativo
+</h2>
+
+<p>
+Teste seus conhecimentos e concorra ao topo do ranking!
+</p>
+
+<button onclick="iniciar()">
+INICIAR QUIZ
 </button>
 
+</div>
+
+<script>
+
+function iniciar(){
+alert("Próxima etapa: carregar perguntas.");
+}
+
+</script>
+
 </body>
+
 </html>
