@@ -399,9 +399,25 @@ async function finalizar(){
 document.getElementById("quizScreen").classList.add("hidden");
 document.getElementById("resultScreen").classList.remove("hidden");
 
+let medalha="🏅";
+
+if(acertos >= 9){
+    medalha="🥇";
+}
+else if(acertos >= 7){
+    medalha="🥈";
+}
+else if(acertos >= 5){
+    medalha="🥉";
+}
+
 document.getElementById("finalResult").innerHTML=
 
 `
+<div style="font-size:80px;">
+${medalha}
+</div>
+
 <b>${nome}</b><br><br>
 
 Matrícula: ${matricula}<br><br>
