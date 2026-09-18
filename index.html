@@ -367,34 +367,57 @@ function answer(opcao){
 
 clearInterval(cronometro);
 
-if(opcao===perguntas[perguntaAtual].c){
+const correta = perguntas[perguntaAtual].c;
+
+const botoes = [
+document.getElementById("a0"),
+document.getElementById("a1"),
+document.getElementById("a2"),
+document.getElementById("a3")
+];
+
+botoes.forEach(btn => {
+btn.disabled = true;
+});
+
+if(opcao === correta){
 
 acertos++;
-pontos+=100+(tempo*5);
+pontos += 100 + (tempo * 5);
 
-}
-
-proximaPergunta();
-
-}
-
-function proximaPergunta(){
-
-perguntaAtual++;
-
-if(perguntaAtual<perguntas.length){
-
-mostrarPergunta();
+botoes[opcao].style.background = "#28a745";
+botoes[opcao].style.color = "white";
+botoes[opcao].style.borderColor = "#28a745";
 
 }else{
 
-finalizar();
+botoes[opcao].style.background = "#dc3545";
+botoes[opcao].style.color = "white";
+botoes[opcao].style.borderColor = "#dc3545";
+
+botoes[correta].style.background = "#28a745";
+botoes[correta].style.color = "white";
+botoes[correta].style.borderColor = "#28a745";
 
 }
 
-}
+setTimeout(()=>{
 
-async function finalizar(){
+botoes.forEach(btn => {
+
+btn.disabled = false;
+
+btn.style.background = "white";
+btn.style.color = "#222";
+btn.style.borderColor = "#333";
+
+});
+
+proximaPergunta();
+
+},1500);
+
+}
 
 document.getElementById("quizScreen").classList.add("hidden");
 document.getElementById("resultScreen").classList.remove("hidden");
@@ -414,7 +437,10 @@ else if(acertos >= 5){
 document.getElementById("finalResult").innerHTML=
 
 `
-<div style="font-size:80px;">
+<div style="
+font-size:100px;
+margin-bottom:15px;
+">
 ${medalha}
 </div>
 
@@ -424,7 +450,14 @@ Matrícula: ${matricula}<br><br>
 
 Acertos: ${acertos}/10<br><br>
 
-Pontuação: ${pontos}<br><br>
+<span style="
+font-size:40px;
+color:#46178f;
+font-weight:900;
+">
+⭐ ${pontos} pontos
+</span>
+<br><br>
 
 Enviando resultado...
 `;
